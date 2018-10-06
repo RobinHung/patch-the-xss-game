@@ -3,6 +3,19 @@ api_version: 1
 threadsafe: false
 
 handlers:
+  # - url: /level2
+  #   static_files: level2-index.html
+  #   upload: level2-index.html
+  #   secure: always
+
+  - url: /css
+    static_dir: css
+    secure: always
+
+  - url: /js
+    static_dir: js
+    secure: always
+
   - url: /.*
     script: webapp.app
     secure: always

@@ -1,4 +1,5 @@
 import webapp2
+import os
 
 
 class MainPage(webapp2.RequestHandler):
@@ -59,7 +60,26 @@ class LevelOne(webapp2.RequestHandler):
         return
 
 
+class LevelTwo(webapp2.RequestHandler):
+    # def render_template(self, filename, context={}):
+    #     path = os.path.join(os.path.dirname(__file__), filename)
+    #     self.response.out.write(template.render(path, context))
+
+    # def get(self):
+    #     self.render_template('/level-2/index.html')
+
+    def get(self):
+        self.response.write(open("level2-index.html").read())
+
+
+class LevelThree(webapp2.RequestHandler):
+    def get(self):
+        self.response.write(open("level3-index.html").read())
+
+
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ('/level-1', LevelOne)
+    ('/level-1', LevelOne),
+    ('/level-2', LevelTwo),
+    ('/level-3', LevelThree)
 ], debug=True)
