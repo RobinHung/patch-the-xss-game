@@ -1,5 +1,6 @@
 import webapp2
 import os
+from google.appengine.ext.webapp import template
 
 
 class MainPage(webapp2.RequestHandler):
@@ -77,9 +78,102 @@ class LevelThree(webapp2.RequestHandler):
         self.response.write(open("level3-index.html").read())
 
 
+class LevelFour(webapp2.RequestHandler):
+    # def get(self):
+    #     self.response.write(open("level4-index.html").read())
+    def render_template(self, filename, context={}):
+        path = os.path.join(os.path.dirname(__file__), filename)
+        self.response.out.write(template.render(path, context))
+
+    def get(self):
+        # Disable the reflected XSS filter for demonstration purposes
+        self.response.headers.add_header("X-XSS-Protection", "0")
+
+        if not self.request.get('timer'):
+            # Show main timer page
+            self.render_template('level4-index.html')
+        else:
+            # Show the results page
+            timer = self.request.get('timer', 0)
+            self.render_template('timer.html', {'timer': timer})
+
+        return
+
+
+class LevelFive(webapp2.RequestHandler):
+    def render_template(self, filename, context={}):
+        path = os.path.join(os.path.dirname(__file__), filename)
+        self.response.out.write(template.render(path, context))
+
+    def get(self):
+        # Disable the reflected XSS filter for demonstration purposes
+        self.response.headers.add_header("X-XSS-Protection", "0")
+
+        # # Route the request to the appropriate template
+        # if "signup" in self.request.path:
+        #     self.render_template('signup.html',
+        #                          {'next': self.request.get('next')})
+        # elif "confirm" in self.request.path:
+        #     self.render_template('confirm.html',
+        #                          {'next': self.request.get('next', 'welcome')})
+        # else:
+        #     self.render_template('welcome.html', {})
+
+        self.render_template('welcome.html', {})
+
+        return
+
+
+class LevelFiveSignUp(webapp2.RequestHandler):
+    def render_template(self, filename, context={}):
+        path = os.path.join(os.path.dirname(__file__), filename)
+        self.response.out.write(template.render(path, context))
+
+    def get(self):
+        if "signup" in self.request.path:
+            self.render_template('signup.html',
+                                 {'next': self.request.get('next', 'welcome')})
+        else:
+            self.response.write("Error...")
+
+        return
+
+
+class LevelFiveConfirm(webapp2.RequestHandler):
+    def render_template(self, filename, context={}):
+        path = os.path.join(os.path.dirname(__file__), filename)
+        self.response.out.write(template.render(path, context))
+
+    def get(self):
+        if "confirm" in self.request.path:
+            # self.render_template('confirm.html',
+            #                      {'next': self.request.get('next')})
+            self.render_template('confirm.html',
+                                 {'next': self.request.get('next', 'welcome')})
+        else:
+            self.response.write("Error...")
+
+        return
+
+
+class LevelSix(webapp2.RequestHandler):
+    def render_template(self, filename, context={}):
+        path = os.path.join(os.path.dirname(__file__), filename)
+        self.response.out.write(template.render(path, context))
+
+    def get(self):
+        self.render_template('level6-index.html')
+
+
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/level-1', LevelOne),
     ('/level-2', LevelTwo),
-    ('/level-3', LevelThree)
+    ('/level-3', LevelThree),
+    ('/level-4', LevelFour),
+    ('/level-5', LevelFive),
+    ('/level-5/welcome', LevelFive),
+    ('/level-5/signup', LevelFiveSignUp),
+    ('/level-5/confirm', LevelFiveConfirm),
+    ('/level-6', LevelSix)
 ], debug=True)
