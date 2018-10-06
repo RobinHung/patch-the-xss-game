@@ -3,8 +3,8 @@
 
 <head>
     <!-- Internal game scripts/styles, mostly boring stuff -->
-    <script src="/js/level3/game-frame.js"></script>
-    <link rel="stylesheet" href="/css/level3/game-frame-styles.css" />
+    <script src="/static/js/game-frame.js"></script>
+    <link rel="stylesheet" href="/static/css/game-frame-styles.css" />
 
     <!-- Load jQuery -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
@@ -29,7 +29,7 @@
         function chooseTab(num) {
             // Dynamically load the appropriate image.
             var html = "Image " + parseInt(num) + "<br>";
-            html += "<img src='/css/level3/cloud" + num + ".jpg' />";
+            html += "<img src='/static/images/cloud" + num + ".jpg' />";
             $('#tabContent').html(html);
 
             window.location.hash = num;

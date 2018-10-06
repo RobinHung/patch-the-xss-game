@@ -3,8 +3,8 @@
 
 <head>
     <!-- Internal game scripts/styles, mostly boring stuff -->
-    <script src="/js/game-frame.js"></script>
-    <link rel="stylesheet" href="/css/game-frame-styles.css" />
+    <script src="/static/js/game-frame.js"></script>
+    <link rel="stylesheet" href="/static/css/game-frame-styles.css" />
 
     <script>
         function startTimer(seconds) {
@@ -20,7 +20,7 @@
 <body id="level4">
     <img src="/static/logos/level4.png" />
     <br>
-    <img src="/css/loading.gif" onload="startTimer('{{ timer }}');" />
+    <img src="/static/images/loading.gif" onload="startTimer('{{ timer }}');" />
     <br>
     <div id="message">Your timer will execute in {{ timer }} seconds.</div>
 </body>
