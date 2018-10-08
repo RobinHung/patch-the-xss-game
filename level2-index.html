@@ -2,6 +2,9 @@
 <html>
 
 <head>
+    <!-- Using CSP-2.0 "nonce" to allow script at Line 15 -->
+    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-987654321'"> -->
+
     <!-- Internal game scripts/styles, mostly boring stuff -->
     <script type="text/javascript" src="/static/js/game-frame.js"></script>
     <link rel="stylesheet" href="/static/css/game-frame-styles.css" />
@@ -9,7 +12,7 @@
     <!-- This is our database of messages -->
     <script type="text/javascript" src="/static/js/post-store.js"></script>
 
-    <script>
+    <script nonce="987654321">
         var defaultMessage = "Welcome!<br><br>This is your <i>personal</i>"
             + " stream. You can post anything you want here, especially "
             + "<span style='color: #f00ba7'>madness</span>.";
@@ -42,6 +45,8 @@
 
             document.getElementById('post-form').onsubmit = function () {
                 var message = document.getElementById('post-content').value;
+                // @xss: escape "<" and ">"
+                // DB.save(message.replace(/</g, "&lt;").replace(/>/g, "&gt;"), function () { displayPosts() });
                 DB.save(message, function () { displayPosts() });
                 document.getElementById('post-content').value = "";
                 return false;

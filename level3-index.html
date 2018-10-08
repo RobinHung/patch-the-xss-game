@@ -2,32 +2,19 @@
 <html>
 
 <head>
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self' ajax.googleapis.com 'nonce-12345' 'unsafe-eval';"> -->
+
     <!-- Internal game scripts/styles, mostly boring stuff -->
     <script src="/static/js/game-frame.js"></script>
     <link rel="stylesheet" href="/static/css/game-frame-styles.css" />
 
     <!-- Load jQuery -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </script>
-
-    <script>
+    <script nonce="12345">
         function chooseTab(num) {
             // Dynamically load the appropriate image.
+
             var html = "Image " + parseInt(num) + "<br>";
             html += "<img src='/static/images/cloud" + num + ".jpg' />";
             $('#tabContent').html(html);
@@ -50,19 +37,27 @@
 
         window.onload = function () {
             chooseTab(unescape(self.location.hash.substr(1)) || "1");
+
+            // document.getElementById("tab1").addEventListener('click', chooseTab('1'));
+            // document.getElementById("tab2").addEventListener('click', chooseTab('2'));
+            // document.getElementById("tab3").addEventListener('click', chooseTab('3'));
         }
 
         // Extra code so that we can communicate with the parent page
         window.addEventListener("message", function (event) {
             if (event.source == parent) {
-                chooseTab(unescape(self.location.hash.substr(1)));
+                // chooseTab(unescape(parseInt(self.location.hash.substr(1))));
+                chooseTab(unescape((self.location.hash.substr(1))));
             }
         }, false);
+
+
     </script>
 
 </head>
 
 <body id="level3">
+
     <div id="header">
         <img id="logo" src="/static/logos/level3.png">
         <span>Take a tour of our cloud data center.</a>
@@ -71,6 +66,9 @@
     <div class="tab" id="tab1" onclick="chooseTab('1')">Image 1</div>
     <div class="tab" id="tab2" onclick="chooseTab('2')">Image 2</div>
     <div class="tab" id="tab3" onclick="chooseTab('3')">Image 3</div>
+    <!-- <div class="tab" id="tab1">Image 1</div> -->
+    <!-- <div class="tab" id="tab2">Image 2</div> -->
+    <!-- <div class="tab" id="tab3">Image 3</div> -->
 
     <div id="tabContent"> </div>
 </body>

@@ -1,6 +1,7 @@
 import webapp2
 import os
 from google.appengine.ext.webapp import template
+import jinja2
 
 
 class MainPage(webapp2.RequestHandler):
@@ -14,8 +15,8 @@ class LevelOne(webapp2.RequestHandler):
     <html>
     <head>
         <!-- Internal game scripts/styles, mostly boring stuff -->
-        <script src="/static/game-frame.js"></script>
-        <link rel="stylesheet" href="/static/game-frame-styles.css" />
+        <script src="/static/js/game-frame.js"></script>
+        <link rel="stylesheet" href="/static/css/game-frame-styles.css" />
     </head>
 
     <body id="level1">
@@ -42,6 +43,9 @@ class LevelOne(webapp2.RequestHandler):
     def get(self):
         # Disable the reflected XSS filter for demonstration purposes
         self.response.headers.add_header("X-XSS-Protection", "0")
+        # @csp
+        # self.response.headers.add_header(
+        #     "Content-Security-Policy", "script-src 'self' style-src 'self'")
 
         if not self.request.get('query'):
             # Show main search page
@@ -74,8 +78,15 @@ class LevelTwo(webapp2.RequestHandler):
 
 
 class LevelThree(webapp2.RequestHandler):
+    # def get(self):
+    #     self.response.write(open("level3-index.html").read())
+
+    def render_template(self, filename, context={}):
+        path = os.path.join(os.path.dirname(__file__), filename)
+        self.response.out.write(template.render(path, context))
+
     def get(self):
-        self.response.write(open("level3-index.html").read())
+        self.render_template('level3-index.html')
 
 
 class LevelFour(webapp2.RequestHandler):
@@ -87,15 +98,19 @@ class LevelFour(webapp2.RequestHandler):
 
     def get(self):
         # Disable the reflected XSS filter for demonstration purposes
-        self.response.headers.add_header("X-XSS-Protection", "0")
+        # self.response.headers.add_header("X-XSS-Protection", "0")
 
         if not self.request.get('timer'):
             # Show main timer page
             self.render_template('level4-index.html')
         else:
-            # Show the results page
-            timer = self.request.get('timer', 0)
-            self.render_template('timer.html', {'timer': timer})
+            try:
+                int(self.request.get('timer', 0))
+                timer = str(int(self.request.get('timer', 0)))
+                self.render_template('timer.html', {'timer': timer})
+
+            except ValueError:
+                self.response.write("Error input!")
 
         return
 
@@ -132,7 +147,7 @@ class LevelFiveSignUp(webapp2.RequestHandler):
     def get(self):
         if "signup" in self.request.path:
             self.render_template('signup.html',
-                                 {'next': self.request.get('next', 'welcome')})
+                                 {'next': self.request.get('next', 'welcome').replace(':', '')})
         else:
             self.response.write("Error...")
 

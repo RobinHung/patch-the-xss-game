@@ -3,10 +3,11 @@
 
 <head>
     <!-- Internal game scripts/styles, mostly boring stuff -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'nonce-999' 'nonce-888'">
     <script src="/static/js/game-frame.js"></script>
     <link rel="stylesheet" href="/static/css/game-frame-styles.css" />
 
-    <script>
+    <script nonce="999">
         function startTimer(seconds) {
             seconds = parseInt(seconds) || 3;
             setTimeout(function () {
