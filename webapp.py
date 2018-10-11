@@ -43,9 +43,10 @@ class LevelOne(webapp2.RequestHandler):
     def get(self):
         # Disable the reflected XSS filter for demonstration purposes
         self.response.headers.add_header("X-XSS-Protection", "0")
+
         # @csp
-        # self.response.headers.add_header(
-        #     "Content-Security-Policy", "script-src 'self' style-src 'self'")
+        self.response.headers.add_header(
+            "Content-Security-Policy", "script-src 'self' style-src 'self'")
 
         if not self.request.get('query'):
             # Show main search page
@@ -105,6 +106,7 @@ class LevelFour(webapp2.RequestHandler):
             self.render_template('level4-index.html')
         else:
             try:
+                # @xss
                 int(self.request.get('timer', 0))
                 timer = str(int(self.request.get('timer', 0)))
                 self.render_template('timer.html', {'timer': timer})

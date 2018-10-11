@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <!-- @csp -->
     <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; script-src 'self' ajax.googleapis.com 'nonce-12345' 'unsafe-eval';"> -->
 
     <!-- Internal game scripts/styles, mostly boring stuff -->
@@ -46,8 +47,9 @@
         // Extra code so that we can communicate with the parent page
         window.addEventListener("message", function (event) {
             if (event.source == parent) {
-                // chooseTab(unescape(parseInt(self.location.hash.substr(1))));
-                chooseTab(unescape((self.location.hash.substr(1))));
+                // @xss
+                chooseTab(unescape(parseInt(self.location.hash.substr(1))));
+                // chooseTab(unescape((self.location.hash.substr(1))));
             }
         }, false);
 

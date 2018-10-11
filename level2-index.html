@@ -2,8 +2,9 @@
 <html>
 
 <head>
-    <!-- Using CSP-2.0 "nonce" to allow script at Line 15 -->
-    <!-- <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-987654321'"> -->
+    <!-- Using CSP-2.0 "nonce" to allow script at Line 16 -->
+    <!-- @csp -->
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'nonce-987654321'">
 
     <!-- Internal game scripts/styles, mostly boring stuff -->
     <script type="text/javascript" src="/static/js/game-frame.js"></script>
@@ -46,8 +47,8 @@
             document.getElementById('post-form').onsubmit = function () {
                 var message = document.getElementById('post-content').value;
                 // @xss: escape "<" and ">"
-                // DB.save(message.replace(/</g, "&lt;").replace(/>/g, "&gt;"), function () { displayPosts() });
-                DB.save(message, function () { displayPosts() });
+                DB.save(message.replace(/</g, "&lt;").replace(/>/g, "&gt;"), function () { displayPosts() });
+                // DB.save(message, function () { displayPosts() });
                 document.getElementById('post-content').value = "";
                 return false;
             }
